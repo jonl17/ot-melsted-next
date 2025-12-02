@@ -1,0 +1,8 @@
+{
+  "repositoryName": "otmelsted",
+  "adapter": "@slicemachine/adapter-next",
+  "libraries": ["./slices"],
+  "labs": {
+    "legacySliceUpgrader": true
+  }
+}

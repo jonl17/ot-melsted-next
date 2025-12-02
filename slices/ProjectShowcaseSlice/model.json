@@ -1,0 +1,27 @@
+{
+  "id": "project_showcase_slice",
+  "type": "SharedSlice",
+  "name": "ProjectShowcaseSlice",
+  "description": "ProjectShowcaseSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {},
+      "items": {
+        "showcase": {
+          "type": "Link",
+          "config": {
+            "label": "showcase",
+            "select": "document",
+            "customtypes": ["project"]
+          }
+        }
+      }
+    }
+  ]
+}

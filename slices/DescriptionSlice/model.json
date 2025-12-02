@@ -1,0 +1,35 @@
+{
+  "id": "description_slice",
+  "type": "SharedSlice",
+  "name": "DescriptionSlice",
+  "description": "DescriptionSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "text",
+            "placeholder": "",
+            "allowTargetBlank": false,
+            "multi": "paragraph"
+          }
+        },
+        "small_text": {
+          "type": "Text",
+          "config": {
+            "label": "small text",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

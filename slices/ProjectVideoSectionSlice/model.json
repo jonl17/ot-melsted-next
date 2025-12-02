@@ -1,0 +1,36 @@
+{
+  "id": "project_video_section_slice",
+  "type": "SharedSlice",
+  "name": "ProjectVideoSectionSlice",
+  "description": "ProjectVideoSectionSlice",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "video": {
+          "type": "Link",
+          "config": {
+            "label": "video",
+            "placeholder": "",
+            "select": "media"
+          }
+        },
+        "remove_container": {
+          "type": "Boolean",
+          "config": {
+            "label": "remove container",
+            "default_value": false,
+            "placeholder_true": "true",
+            "placeholder_false": "false"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

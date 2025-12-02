@@ -1,0 +1,79 @@
+{
+  "id": "project",
+  "label": "project",
+  "format": "custom",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "title",
+          "placeholder": ""
+        }
+      },
+      "featured_image": {
+        "type": "Image",
+        "config": {
+          "label": "featured image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "project_video_section_slice": {
+              "type": "SharedSlice"
+            },
+            "project_banner": {
+              "type": "SharedSlice"
+            },
+            "description_slice": {
+              "type": "SharedSlice"
+            },
+            "project_image_section": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "seo": {
+      "seo_title": {
+        "type": "Text",
+        "config": {
+          "label": "seo title",
+          "placeholder": ""
+        }
+      },
+      "seo_description": {
+        "type": "Text",
+        "config": {
+          "label": "seo description",
+          "placeholder": "Optimal SEO description length is 150-160 characters"
+        }
+      },
+      "seo_image": {
+        "type": "Image",
+        "config": {
+          "label": "seo image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      }
+    }
+  }
+}

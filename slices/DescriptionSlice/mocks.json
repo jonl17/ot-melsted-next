@@ -1,0 +1,25 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"text": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Eu ex velit amet. Deserunt cillum sit eiusmod id cupidatat tempor nulla eu aliquip minim quis in eu."
+						}
+					}
+				]
+			},
+			"small_text": {
+				"__TYPE__": "FieldContent",
+				"value": "distance",
+				"type": "Text"
+			}
+		},
+		"items": []
+	}
+]

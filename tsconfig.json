@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "~prismicio-types-d": ["./prismicio-types.d.ts"]
     }
   },
   "include": [

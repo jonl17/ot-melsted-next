@@ -1,0 +1,47 @@
+{
+  "id": "page_settings",
+  "label": "Page settings",
+  "format": "custom",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "favicon": {
+        "type": "Image",
+        "config": {
+          "label": "favicon",
+          "constraint": {
+            "width": 30,
+            "height": 30
+          },
+          "thumbnails": []
+        }
+      },
+      "page_title": {
+        "type": "Text",
+        "config": {
+          "label": "page title",
+          "placeholder": ""
+        }
+      },
+      "page_image": {
+        "type": "Image",
+        "config": {
+          "label": "page image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      },
+      "page_description": {
+        "type": "Text",
+        "config": {
+          "label": "page description",
+          "placeholder": "Optimal SEO description length is 150-160 characters"
+        }
+      }
+    }
+  }
+}
