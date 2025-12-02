@@ -8,8 +8,13 @@ export default function Logo() {
   const { isDark, activeSection } = useTheme();
 
   // Only use isDark colors when slideshow is active (section 0)
+  // Section 1 (project showcase) has white background, so use black text
   const textColor =
-    activeSection === 0 ? (isDark ? "white" : "black") : "white";
+    activeSection === 0
+      ? (isDark ? "white" : "black")
+      : activeSection === 1
+        ? "black"
+        : "white";
 
   return (
     <div className="fixed top-12 left-0 right-0 flex justify-center z-50 w-full">

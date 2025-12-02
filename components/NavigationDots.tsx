@@ -18,6 +18,11 @@ export default function NavigationDots() {
       return isDark ? "bg-white" : "bg-black";
     }
 
+    // Active dot on section 1 (project showcase with white bg): black
+    if (activeSection === 1) {
+      return "bg-black";
+    }
+
     // Active dot on other sections: white
     return "bg-white";
   };

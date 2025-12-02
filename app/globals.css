@@ -38,3 +38,13 @@
 .debug {
   border: 1px solid #948;
 }
+
+/* Hide scrollbar for project list */
+.project-list-scroll {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.project-list-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

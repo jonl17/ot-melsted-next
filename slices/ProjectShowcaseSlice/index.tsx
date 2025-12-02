@@ -1,14 +1,14 @@
-import ProjectShowcase from '@/components/ProjectShowcase'
-import { Content } from '@prismicio/client'
-import { SliceComponentProps } from '@prismicio/react'
-import { ProjectDocument } from '~prismicio-types-d'
-import { createClient } from '@/prismicio'
+import ProjectShowcase from "@/components/ProjectShowcase";
+import { Content } from "@prismicio/client";
+import { SliceComponentProps } from "@prismicio/react";
+import { ProjectDocument } from "~prismicio-types-d";
+import { createClient } from "@/prismicio";
 
 /**
  * Props for `ProjectShowcaseSlice`.
  */
 export type ProjectShowcaseSliceProps =
-  SliceComponentProps<Content.ProjectShowcaseSliceSlice>
+  SliceComponentProps<Content.ProjectShowcaseSliceSlice>;
 
 /**
  * Component for "ProjectShowcaseSlice" Slices.
@@ -16,10 +16,10 @@ export type ProjectShowcaseSliceProps =
 export default async function ProjectShowcaseSlice({
   slice,
 }: ProjectShowcaseSliceProps) {
-  const client = createClient()
+  const client = createClient();
   const projectDocuments = await client.getAllByIDs<ProjectDocument>(
-    slice.items.map((item: any) => item.showcase.id)
-  )
+    slice.items.map((item: any) => item.showcase.id),
+  );
 
   return (
     <section
@@ -28,5 +28,5 @@ export default async function ProjectShowcaseSlice({
     >
       <ProjectShowcase projectDocuments={projectDocuments} />
     </section>
-  )
+  );
 }
