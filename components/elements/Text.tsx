@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-type TextVariant = "large" | "large-mobile" | "medium" | "small";
+type TextVariant = "huge" | "large" | "large-mobile" | "medium" | "small";
 type TextColor = "gray" | "lightgray" | "darkgray" | "white" | "black";
 type TextFont = "untitled" | "untitled-medium";
 type TextElement = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div";
@@ -25,6 +25,7 @@ export default function Text({
   const Component = as;
 
   const variantClasses: Record<TextVariant, string> = {
+    huge: "text-huge",
     large: "text-large",
     "large-mobile": "text-large-mobile",
     medium: "text-medium",

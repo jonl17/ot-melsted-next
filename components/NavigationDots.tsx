@@ -26,15 +26,15 @@ export default function NavigationDots() {
     <div className="fixed bottom-12 left-0 right-0 flex justify-center gap-4 z-50">
       <button
         onClick={() => setActiveSection(0)}
-        className={`w-3 h-3 ${transitionClasses} ${getButtonColor(0)}`}
+        className={`w-4 h-4 ${transitionClasses} ${getButtonColor(0)}`}
       />
       <button
         onClick={() => setActiveSection(1)}
-        className={`w-3 h-3 ${transitionClasses} ${getButtonColor(1)}`}
+        className={`w-4 h-4 ${transitionClasses} ${getButtonColor(1)}`}
       />
       <button
         onClick={() => setActiveSection(2)}
-        className={`w-3 h-3 ${transitionClasses} ${getButtonColor(2)}`}
+        className={`w-4 h-4 ${transitionClasses} ${getButtonColor(2)}`}
       />
     </div>
   );

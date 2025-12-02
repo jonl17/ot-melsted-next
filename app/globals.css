@@ -17,6 +17,8 @@
   --font-family-untitled-medium: "sans-medium", sans-serif;
 
   --text-*: initial;
+  --text-huge: clamp(80px, 15vw, 240px);
+  --text-huge--line-height: 1;
   --text-large: 36px;
   --text-large--line-height: 45px;
   --text-large-mobile: 20px;

@@ -14,6 +14,12 @@ export const slideshowConfig = {
   // Time each slide stays visible before transitioning (in milliseconds)
   slideInterval: 5000,
 
+  // Loading screen display time before fade out (in milliseconds)
+  loadingScreenDuration: 1500,
+
+  // Loading screen fade out duration (in seconds)
+  loadingScreenFadeDuration: 0.5,
+
   // Threshold for determining if image is dark (0-255)
   // Lower = more images considered dark, Higher = fewer images considered dark
   brightnessThreshold: 127.5,
