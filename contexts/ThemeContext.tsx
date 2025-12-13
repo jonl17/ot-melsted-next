@@ -16,7 +16,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [activeSection, setActiveSection] = useState(0);
 
   return (
-    <ThemeContext.Provider value={{ isDark, setIsDark, activeSection, setActiveSection }}>
+    <ThemeContext.Provider
+      value={{ isDark, setIsDark, activeSection, setActiveSection }}
+    >
       {children}
     </ThemeContext.Provider>
   );

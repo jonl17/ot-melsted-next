@@ -1,9 +1,24 @@
 import { ReactNode } from "react";
 
-type TextVariant = "huge" | "large" | "large-mobile" | "medium" | "small";
+type TextVariant =
+  | "huge"
+  | "large"
+  | "30"
+  | "large-mobile"
+  | "medium"
+  | "small";
 type TextColor = "gray" | "lightgray" | "darkgray" | "white" | "black";
 type TextFont = "untitled" | "untitled-medium";
-type TextElement = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div";
+type TextElement =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "p"
+  | "span"
+  | "div";
 
 interface TextProps {
   children: ReactNode;
@@ -17,8 +32,8 @@ interface TextProps {
 export default function Text({
   children,
   variant = "medium",
-  color = "white",
-  font = "untitled",
+  color = "black",
+  font = "untitled-medium",
   as = "p",
   className = "",
 }: TextProps) {
@@ -27,6 +42,7 @@ export default function Text({
   const variantClasses: Record<TextVariant, string> = {
     huge: "text-huge",
     large: "text-large",
+    "30": "text-30",
     "large-mobile": "text-large-mobile",
     medium: "text-medium",
     small: "text-small",
