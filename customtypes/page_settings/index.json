@@ -41,6 +41,24 @@
           "label": "page description",
           "placeholder": "Optimal SEO description length is 150-160 characters"
         }
+      },
+      "about_text": {
+        "type": "StructuredText",
+        "config": {
+          "label": "about text",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph"
+        }
+      },
+      "contact_box": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Contact box",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,strong,hyperlink"
+        }
       }
     }
   }

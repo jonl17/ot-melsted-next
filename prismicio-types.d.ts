@@ -217,6 +217,28 @@ interface PageSettingsDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/text
    */
   page_description: prismic.KeyTextField;
+
+  /**
+   * about text field in *Page settings*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page_settings.about_text
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  about_text: prismic.RichTextField;
+
+  /**
+   * Contact box field in *Page settings*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page_settings.contact_box
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  contact_box: prismic.RichTextField;
 }
 
 /**
@@ -237,7 +259,6 @@ export type PageSettingsDocument<Lang extends string = string> =
 
 type ProjectDocumentDataSlicesSlice =
   | ProjectVideoSectionSliceSlice
-  | ProjectBannerSlice
   | DescriptionSliceSlice
   | ProjectImageSectionSlice;
 
