@@ -6,6 +6,7 @@ import Link from "next/link";
 import Text from "@/components/elements/Text";
 import NextProject from "@/components/NextProject/NextProject";
 import { ProjectDocument } from "~prismicio-types-d";
+import { Content } from "@prismicio/client";
 
 interface ProjectPageProps {
   params: Promise<{ uid: string }>;
@@ -40,10 +41,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         // Find the first description slice in the next project
         const descriptionSlice = nextProject.data.slices.find(
-          (slice: any) => slice.slice_type === "description_slice"
-        );
+          (slice) => slice.slice_type === "description_slice"
+        ) as Content.DescriptionSliceSlice | undefined;
 
-        if (descriptionSlice) {
+        if (descriptionSlice && "text" in descriptionSlice.primary) {
           nextProjectData = {
             uid: nextProject.uid || "",
             title: nextProject.data.title || "",
