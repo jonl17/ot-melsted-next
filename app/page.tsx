@@ -13,7 +13,7 @@ export default async function Home() {
   console.log("Homepage data:", homepage);
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="min-h-screen">
       <Logo />
       <SliceZone slices={homepage.data.slices} components={components} />
       <About

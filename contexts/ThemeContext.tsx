@@ -6,6 +6,7 @@ interface ThemeContextType {
   isDark: boolean;
   setIsDark: (isDark: boolean) => void;
   activeSection: number;
+  previousSection: number;
   setActiveSection: (section: number) => void;
 }
 
@@ -14,10 +15,22 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [isDark, setIsDark] = useState(true);
   const [activeSection, setActiveSection] = useState(0);
+  const [previousSection, setPreviousSection] = useState(0);
+
+  const handleSetActiveSection = (section: number) => {
+    setPreviousSection(activeSection);
+    setActiveSection(section);
+  };
 
   return (
     <ThemeContext.Provider
-      value={{ isDark, setIsDark, activeSection, setActiveSection }}
+      value={{
+        isDark,
+        setIsDark,
+        activeSection,
+        previousSection,
+        setActiveSection: handleSetActiveSection,
+      }}
     >
       {children}
     </ThemeContext.Provider>
