@@ -7,6 +7,11 @@ import { PrismicNextImage } from "@prismicio/next";
 import { useTheme } from "@/contexts/ThemeContext";
 import { analyzeImageBrightness } from "@/utils/imageAnalysis";
 import {
+  getSectionDirection,
+  getSectionVariants,
+  sectionTransition,
+} from "@/utils/animationConfig";
+import {
   slideshowConfig,
   getFramerTransitionConfig,
 } from "@/utils/slideshowConfig";
@@ -19,14 +24,16 @@ interface FrontpageHeroSlideshowProps {
   slides: Slide[];
   interval?: number;
 }
+const sectionVariants = getSectionVariants();
 
 export default function FrontpageHeroSlideshow({
   slides,
   interval = slideshowConfig.slideInterval,
 }: FrontpageHeroSlideshowProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [lastInteraction, setLastInteraction] = useState<number>(Date.now());
-  const { setIsDark, activeSection } = useTheme();
+  const [lastInteraction, setLastInteraction] = useState(0);
+  const { setIsDark, activeSection, previousSection } = useTheme();
+  const direction = getSectionDirection(activeSection, previousSection);
 
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
@@ -65,14 +72,16 @@ export default function FrontpageHeroSlideshow({
   if (!slides || slides.length === 0) return null;
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" initial={false} custom={direction}>
       {activeSection === 0 && (
         <motion.div
           key="hero-section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          custom={direction}
+          variants={sectionVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={sectionTransition}
           className="fixed inset-0 w-screen h-screen"
         >
           {slides.map((slide, index) => (

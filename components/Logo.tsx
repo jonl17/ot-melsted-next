@@ -11,7 +11,9 @@ export default function Logo() {
   // Section 1 (project showcase) and section 2 (about) have white backgrounds, so use black text
   const textColor =
     activeSection === 0
-      ? (isDark ? "white" : "black")
+      ? isDark
+        ? "white"
+        : "black"
       : activeSection === 1 || activeSection === 2
         ? "black"
         : "white";
@@ -24,7 +26,7 @@ export default function Logo() {
       >
         <Text
           className={getTailwindTransitionClasses()}
-          variant="medium"
+          variant="large-mobile"
           font="untitled-medium"
           color={textColor}
         >

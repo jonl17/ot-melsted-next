@@ -1,3 +1,5 @@
+import { animationConfig } from "./animationConfig";
+
 /**
  * Centralized configuration for slideshow animations
  * Tweak these values to adjust the slideshow behavior
@@ -5,20 +7,20 @@
 
 export const slideshowConfig = {
   // Duration of fade transition between slides (in seconds)
-  transitionDuration: 0.5,
+  transitionDuration: animationConfig.slideshowFadeDuration,
 
   // Easing function for transitions
   // Options: "linear", "easeIn", "easeOut", "easeInOut", "circIn", "circOut", "circInOut", "backIn", "backOut", "backInOut", "anticipate"
-  transitionEasing: "easeInOut" as const,
+  transitionEasing: animationConfig.slideshowFadeEase,
 
   // Time each slide stays visible before transitioning (in milliseconds)
   slideInterval: 5000,
 
   // Loading screen display time before fade out (in milliseconds)
-  loadingScreenDuration: 1500,
+  loadingScreenDuration: animationConfig.loadingScreenDurationMs,
 
   // Loading screen fade out duration (in seconds)
-  loadingScreenFadeDuration: 0.5,
+  loadingScreenFadeDuration: animationConfig.loadingScreenFadeDuration,
 
   // Threshold for determining if image is dark (0-255)
   // Lower = more images considered dark, Higher = fewer images considered dark

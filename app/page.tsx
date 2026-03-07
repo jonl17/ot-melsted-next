@@ -4,16 +4,16 @@ import { components } from "@/slices";
 import Logo from "@/components/Logo";
 import NavigationDots from "@/components/NavigationDots";
 import About from "@/components/About";
+import ScreensaverOverlay from "@/components/ScreensaverOverlay";
 
 export default async function Home() {
   const client = createClient();
   const homepage = await client.getSingle("homepage");
   const pageSettings = await client.getSingle("page_settings");
 
-  console.log("Homepage data:", homepage);
-
   return (
     <div className="min-h-screen">
+      <ScreensaverOverlay videoUrl={pageSettings.data.screensaver?.url} />
       <Logo />
       <SliceZone slices={homepage.data.slices} components={components} />
       <About

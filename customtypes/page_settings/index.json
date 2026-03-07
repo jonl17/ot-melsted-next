@@ -59,6 +59,15 @@
           "allowTargetBlank": true,
           "multi": "paragraph,strong,hyperlink"
         }
+      },
+      "screensaver": {
+        "type": "Link",
+        "config": {
+          "label": "screensaver",
+          "placeholder": "",
+          "select": "media",
+          "allowText": true
+        }
       }
     }
   }

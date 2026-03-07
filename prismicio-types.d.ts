@@ -239,6 +239,17 @@ interface PageSettingsDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/rich-text
    */
   contact_box: prismic.RichTextField;
+
+  /**
+   * screensaver field in *Page settings*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: *None*
+   * - **API ID Path**: page_settings.screensaver
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+   */
+  screensaver: prismic.LinkToMediaField<prismic.FieldState, never>;
 }
 
 /**
