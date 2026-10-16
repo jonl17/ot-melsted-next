@@ -61,3 +61,48 @@
   background-color: #000000;
   color: #ffffff;
 }
+
+/* ------------------------------------------------------------------
+   Project page layout. Tweak these once exact Figma values are in.
+   ------------------------------------------------------------------ */
+:root {
+  --project-margin: 32px;      /* side margin for contained rows */
+  --project-row-gap: 32px;     /* vertical gap between rows */
+  --project-col-gap: 24px;     /* gap between images in the same row */
+}
+
+@media (max-width: 768px) {
+  :root {
+    --project-margin: 16px;
+    --project-row-gap: 16px;
+    --project-col-gap: 16px;
+  }
+}
+
+.project-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--project-row-gap);
+}
+
+.project-rows > section:empty {
+  display: none;
+}
+
+.project-row {
+  display: grid;
+  grid-template-columns: repeat(var(--project-cols, 1), minmax(0, 1fr));
+  gap: var(--project-col-gap);
+  align-items: start;
+  padding-inline: var(--project-margin);
+}
+
+.project-row--full {
+  padding-inline: 0;
+}
+
+.project-media {
+  display: block;
+  width: 100%;
+  height: auto;
+}

@@ -1,5 +1,5 @@
 interface ProjectBannerProps {
-  image: any;
+  image: unknown;
 }
 
 export default function ProjectBanner({ image }: ProjectBannerProps) {

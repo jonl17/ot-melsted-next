@@ -1,8 +1,9 @@
+import type { RichTextField } from "@prismicio/client";
 import Text from "@/components/elements/Text";
 import { PrismicRichText } from "@prismicio/react";
 
 interface ProjectDescriptionProps {
-  text: any;
+  text: RichTextField;
   smallText: string;
 }
 
