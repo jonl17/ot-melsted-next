@@ -1,5 +1,12 @@
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "crypto";
+
+function safeEqual(a: string, b: string) {
+  const ab = Buffer.from(a);
+  const bb = Buffer.from(b);
+  return ab.length === bb.length && timingSafeEqual(ab, bb);
+}
 
 /**
  * Prismic webhook target: purges cached Prismic data so publishes show up instantly.
@@ -12,7 +19,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Revalidation is not configured" }, { status: 500 });
   }
   const body = await request.json().catch(() => ({}));
-  if (body?.secret !== secret) {
+  if (typeof body?.secret !== "string" || !safeEqual(body.secret, secret)) {
     return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
   }
   revalidateTag("prismic", "max");
