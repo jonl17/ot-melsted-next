@@ -10,7 +10,9 @@ interface ProjectImageSectionProps {
 /**
  * One row of project images.
  * - Contained rows use the shared side margin (--project-margin); full-width rows don't.
- * - Images keep their native aspect ratio (from Prismic dimensions); never cropped.
+ * - A single image keeps its native aspect ratio (from Prismic dimensions).
+ * - A pair uses one shared aspect box (the first image's ratio) with object-cover,
+ *   so both images have equal width and height.
  * - Vertical spacing comes from the parent .project-rows gap, not from this row.
  */
 export default function ProjectImageSection({
@@ -27,18 +29,22 @@ export default function ProjectImageSection({
       style={{ ["--project-cols" as string]: images.length }}
     >
       {images.map((img, i) => {
-        const w = img.dimensions?.width;
-        const h = img.dimensions?.height;
+        const isPair = images.length > 1;
+        const box = isPair ? images[0] : img;
+        const w = box.dimensions?.width;
+        const h = box.dimensions?.height;
         return (
           <PrismicNextImage
             key={i}
             field={img}
             fallbackAlt=""
-            className="project-media"
+            className={`project-media${isPair ? " project-media--cover" : ""}`}
             sizes={
-              images.length > 1
-                ? "(max-width: 768px) 100vw, 50vw"
-                : "100vw"
+              isPair
+                ? "(max-width: 1023px) 100vw, 25vw"
+                : container
+                  ? "(max-width: 1023px) 100vw, 50vw"
+                  : "100vw"
             }
             style={w && h ? { aspectRatio: `${w} / ${h}` } : undefined}
           />

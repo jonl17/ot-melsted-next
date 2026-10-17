@@ -63,19 +63,27 @@
 }
 
 /* ------------------------------------------------------------------
-   Project page layout. Tweak these once exact Figma values are in.
+   Project page layout: final launch spacing spec.
+   Mobile/tablet (<1024px): 16px side margins, 80px between rows, pairs stack 80px apart.
+   Desktop (>=1024px, Tailwind lg, same breakpoint PR #2 uses for desktop layouts):
+   25vw side margins (rows are 50vw wide), 12.5vw between rows, 20px between paired images.
+   Full-width rows: no side margins at any size.
    ------------------------------------------------------------------ */
 :root {
-  --project-margin: 32px;      /* side margin for contained rows */
-  --project-row-gap: 32px;     /* vertical gap between rows */
-  --project-col-gap: 24px;     /* gap between images in the same row */
+  --project-margin: 16px;      /* side margin for contained rows */
+  --project-row-gap: 80px;     /* vertical gap between rows */
+  --project-col-gap: 80px;     /* gap between paired images (stacked on mobile) */
+  --project-cols-active: 1;    /* pairs stack below lg */
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
   :root {
-    --project-margin: 16px;
-    --project-row-gap: 16px;
-    --project-col-gap: 16px;
+    --project-margin: 25vw;
+    --project-row-gap: 12.5vw;
+    --project-col-gap: 20px;
+  }
+  .project-row {
+    --project-cols-active: var(--project-cols, 1);
   }
 }
 
@@ -91,7 +99,7 @@
 
 .project-row {
   display: grid;
-  grid-template-columns: repeat(var(--project-cols, 1), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--project-cols-active, 1), minmax(0, 1fr));
   gap: var(--project-col-gap);
   align-items: start;
   padding-inline: var(--project-margin);
@@ -105,4 +113,9 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* Paired images share one aspect box (the first image's ratio) and crop to fill it */
+.project-media--cover {
+  object-fit: cover;
 }
