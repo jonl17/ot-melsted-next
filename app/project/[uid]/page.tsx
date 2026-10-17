@@ -1,4 +1,3 @@
-import { isFilled } from "@prismicio/client";
 import { createClient } from "@/prismicio";
 import { SliceZone } from "@prismicio/react";
 import { components } from "@/slices";
@@ -8,6 +7,7 @@ import Text from "@/components/elements/Text";
 import NextProject from "@/components/NextProject/NextProject";
 import { ProjectDocument } from "~prismicio-types-d";
 import { Content } from "@prismicio/client";
+import { getOrderedShowcaseProjects } from "@/utils/orderedProjects";
 
 // Render unknown uids on demand (new projects published after the last build)
 export const dynamicParams = true;
@@ -35,11 +35,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
     let nextProjectData = null;
     if (projectShowcaseSlice) {
-      const projectIds = projectShowcaseSlice.items.map(
-        (item) =>
-          isFilled.contentRelationship(item.showcase) ? item.showcase.id : undefined
-      ).filter((id): id is string => Boolean(id));
-      const allProjects = await client.getAllByIDs<ProjectDocument>(projectIds);
+      const allProjects = await getOrderedShowcaseProjects(
+        projectShowcaseSlice as Content.ProjectShowcaseSliceSlice,
+        client
+      );
 
       // Find current project index
       const currentIndex = allProjects.findIndex((p) => p.uid === uid);

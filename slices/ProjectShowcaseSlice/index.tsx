@@ -1,9 +1,7 @@
-import { isFilled } from "@prismicio/client";
 import ProjectShowcase from "@/components/ProjectShowcase";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { ProjectDocument } from "~prismicio-types-d";
-import { createClient } from "@/prismicio";
+import { getOrderedShowcaseProjects } from "@/utils/orderedProjects";
 
 /**
  * Props for `ProjectShowcaseSlice`.
@@ -17,13 +15,7 @@ export type ProjectShowcaseSliceProps =
 export default async function ProjectShowcaseSlice({
   slice,
 }: ProjectShowcaseSliceProps) {
-  const client = createClient();
-  const projectDocuments = await client.getAllByIDs<ProjectDocument>(
-    slice.items
-      .map((item) =>
-          isFilled.contentRelationship(item.showcase) ? item.showcase.id : undefined)
-      .filter((id): id is string => Boolean(id)),
-  );
+  const projectDocuments = await getOrderedShowcaseProjects(slice);
 
   return (
     <section
