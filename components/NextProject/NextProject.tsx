@@ -4,6 +4,7 @@ import type { RichTextField } from "@prismicio/client";
 import { useRouter } from "next/navigation";
 import Text from "@/components/elements/Text";
 import { PrismicRichText } from "@prismicio/react";
+import { introTextClass } from "@/utils/introTextSize";
 
 interface NextProjectProps {
   nextProjectUid: string;
@@ -19,14 +20,21 @@ export default function NextProject({
   nextProjectDescriptionSmallText,
 }: NextProjectProps) {
   const router = useRouter();
+  const sizeClass = introTextClass(
+    nextProjectDescriptionText,
+    nextProjectDescriptionSmallText
+  );
 
   const handleClick = () => {
     router.push(`/project/${nextProjectUid}`);
   };
 
   return (
-    <>
-      {/* Scrolling description content */}
+    // Exactly one viewport tall. The inner block uses the same layout and size tier as the
+    // next page's intro (ProjectDescription), so at the bottom of this page the frame is
+    // identical to the next page's first frame. The tiers keep every intro within one viewport;
+    // overflow-hidden is only a safety net and never clips current content (checked in tests).
+    <div className="h-screen overflow-hidden">
       <div
         onClick={handleClick}
         className="min-h-screen flex items-center justify-center px-8 py-24 cursor-pointer hover:opacity-80 transition-opacity"
@@ -43,7 +51,11 @@ export default function NextProject({
           <PrismicRichText
             field={nextProjectDescriptionText}
             components={{
-              paragraph: ({ children }) => <Text variant="30">{children}</Text>,
+              paragraph: ({ children }) => (
+                <Text variant="30" className={sizeClass}>
+                  {children}
+                </Text>
+              ),
             }}
           />
           {nextProjectDescriptionSmallText && (
@@ -53,6 +65,6 @@ export default function NextProject({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
