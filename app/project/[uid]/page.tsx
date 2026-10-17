@@ -64,7 +64,17 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     }
 
     return (
-      <div className="bg-white min-h-screen relative pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-[calc(92px+env(safe-area-inset-bottom))]">
+      <div
+        className={`bg-white min-h-screen relative ${
+          // The NextProject block is a full-screen, vertically centered block, so the
+          // fixed bar never covers its text and it must end flush with the page.
+          // That keeps it pixel-aligned with the next page's intro block at the top.
+          // Without it, the last row needs room to clear the fixed bar.
+          nextProjectData
+            ? ""
+            : "pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-[calc(92px+env(safe-area-inset-bottom))]"
+        }`}
+      >
         {/* All rows share one vertical gap (--project-row-gap) */}
         <div className="project-rows">
           <SliceZone slices={project.data.slices} components={components} />
@@ -82,7 +92,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           />
         )}
 
-        {/* Bottom title/close bar. Content above reserves its height via bottom padding. */}
+        {/* Bottom title/close bar. Without a NextProject block, the content reserves its height via bottom padding. */}
         <div className="fixed left-0 bottom-0 z-40 flex items-center justify-between gap-8 w-full bg-white p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] md:px-12 md:py-6 md:pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
           <Text variant="large-mobile" color="black">
             {project.data.title}

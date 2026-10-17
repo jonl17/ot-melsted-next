@@ -25,8 +25,10 @@ export default function NextProject({
   };
 
   return (
-    <>
-      {/* Scrolling description content */}
+    // Exactly one viewport tall and clipped: the inner block uses the same layout as the
+    // next page's intro (ProjectDescription), so at the bottom of this page the frame is
+    // identical to the next page's first frame, even when the intro is taller than the screen.
+    <div className="h-screen overflow-hidden">
       <div
         onClick={handleClick}
         className="min-h-screen flex items-center justify-center px-8 py-24 cursor-pointer hover:opacity-80 transition-opacity"
@@ -53,6 +55,6 @@ export default function NextProject({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
