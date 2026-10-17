@@ -1,4 +1,5 @@
 "use client";
+import type { RichTextField } from "@prismicio/client";
 
 import { useRouter } from "next/navigation";
 import Text from "@/components/elements/Text";
@@ -7,7 +8,7 @@ import { PrismicRichText } from "@prismicio/react";
 interface NextProjectProps {
   nextProjectUid: string;
   nextProjectTitle: string;
-  nextProjectDescriptionText: any;
+  nextProjectDescriptionText: RichTextField;
   nextProjectDescriptionSmallText: string;
 }
 

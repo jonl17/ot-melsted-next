@@ -20,8 +20,9 @@ const ProjectVideoSectionSlice = ({
       data-slice-variation={slice.variation}
     >
       <ProjectVideoSection
-        // @ts-ignore
-        videoUrl={slice.primary.video.url}
+        videoUrl={
+          "url" in slice.primary.video ? slice.primary.video.url ?? "" : ""
+        }
         container={!slice.primary.remove_container}
       />
     </section>

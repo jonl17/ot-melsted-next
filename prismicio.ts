@@ -35,7 +35,10 @@ export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
     accessToken: process.env.PRISMIC_ACCESS_TOKEN,
     fetchOptions:
       process.env.NODE_ENV === 'production'
-        ? { next: { tags: ['prismic'] }, cache: 'force-cache' }
+        ? // Cache Prismic responses, but refresh at most every 60s so published
+          // content (incl. new projects) appears without a redeploy.
+          // /api/revalidate can also purge the 'prismic' tag instantly.
+          { next: { tags: ['prismic'], revalidate: 60 } }
         : { next: { revalidate: 5 } },
     ...config,
   })

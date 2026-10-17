@@ -7,53 +7,43 @@ interface ProjectImageSectionProps {
   container: boolean;
 }
 
+/**
+ * One row of project images.
+ * - Contained rows use the shared side margin (--project-margin); full-width rows don't.
+ * - Images keep their native aspect ratio (from Prismic dimensions); never cropped.
+ * - Vertical spacing comes from the parent .project-rows gap, not from this row.
+ */
 export default function ProjectImageSection({
   firstImage,
   secondImage,
   container,
 }: ProjectImageSectionProps) {
-  const hasFirstImage = firstImage && firstImage.url;
-  const hasSecondImage = secondImage && secondImage.url;
-  const isTwoImages = hasFirstImage && hasSecondImage;
-
-  if (!hasFirstImage) return null;
+  const images = [firstImage, secondImage].filter((img) => img && img.url);
+  if (images.length === 0) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-8 py-24">
-      <div
-        className={`w-full flex items-center justify-center ${
-          isTwoImages ? "gap-6" : ""
-        }`}
-      >
-        {isTwoImages ? (
-          <>
-            {/* Two images side by side */}
-            <div className="relative w-full max-w-md aspect-[4/5]">
-              <PrismicNextImage
-                field={firstImage}
-                className="w-full h-full object-cover"
-                fallbackAlt=""
-              />
-            </div>
-            <div className="relative w-full max-w-md aspect-[4/5]">
-              <PrismicNextImage
-                field={secondImage}
-                className="w-full h-full object-cover"
-                fallbackAlt=""
-              />
-            </div>
-          </>
-        ) : (
-          /* Single image centered */
-          <div className="relative w-full max-w-4xl mx-auto aspect-[6/4]">
-            <PrismicNextImage
-              field={firstImage}
-              className="w-full h-full object-cover"
-              fallbackAlt=""
-            />
-          </div>
-        )}
-      </div>
+    <div
+      className={`project-row ${container ? "" : "project-row--full"}`}
+      style={{ ["--project-cols" as string]: images.length }}
+    >
+      {images.map((img, i) => {
+        const w = img.dimensions?.width;
+        const h = img.dimensions?.height;
+        return (
+          <PrismicNextImage
+            key={i}
+            field={img}
+            fallbackAlt=""
+            className="project-media"
+            sizes={
+              images.length > 1
+                ? "(max-width: 768px) 100vw, 50vw"
+                : "100vw"
+            }
+            style={w && h ? { aspectRatio: `${w} / ${h}` } : undefined}
+          />
+        );
+      })}
     </div>
   );
 }

@@ -5,6 +5,7 @@ interface ProjectVideoSectionProps {
   container: boolean;
 }
 
+/** Video row: same margin/gap rules as image rows, native aspect ratio (no cropping). */
 export default function ProjectVideoSection({
   videoUrl,
   container,
@@ -12,17 +13,18 @@ export default function ProjectVideoSection({
   if (!videoUrl) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-8 py-24">
-      <div className="w-full max-w-4xl mx-auto aspect-[6/4]">
-        <video
-          src={videoUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        />
-      </div>
+    <div
+      className={`project-row ${container ? "" : "project-row--full"}`}
+      style={{ ["--project-cols" as string]: 1 }}
+    >
+      <video
+        src={videoUrl}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="project-media"
+      />
     </div>
   );
 }

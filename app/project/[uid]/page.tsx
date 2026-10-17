@@ -1,3 +1,4 @@
+import { isFilled } from "@prismicio/client";
 import { createClient } from "@/prismicio";
 import { SliceZone } from "@prismicio/react";
 import { components } from "@/slices";
@@ -8,6 +9,9 @@ import NextProject from "@/components/NextProject/NextProject";
 import { ProjectDocument } from "~prismicio-types-d";
 import { Content } from "@prismicio/client";
 
+// Render unknown uids on demand (new projects published after the last build)
+export const dynamicParams = true;
+
 interface ProjectPageProps {
   params: Promise<{ uid: string }>;
 }
@@ -16,20 +20,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const { uid } = await params;
   const client = createClient();
 
-  try {
-    const project = await client.getByUID("project", uid);
+  const project = await client
+    .getByUID<ProjectDocument>("project", uid)
+    .catch(() => null);
+  if (!project) notFound();
+
+  {
 
     // Get all projects in the same order as the homepage
     const homepage = await client.getSingle("homepage");
     const projectShowcaseSlice = homepage.data.slices.find(
-      (slice: any) => slice.slice_type === "project_showcase_slice"
+      (slice) => slice.slice_type === "project_showcase_slice"
     );
 
     let nextProjectData = null;
     if (projectShowcaseSlice) {
       const projectIds = projectShowcaseSlice.items.map(
-        (item: any) => item.showcase.id
-      );
+        (item) =>
+          isFilled.contentRelationship(item.showcase) ? item.showcase.id : undefined
+      ).filter((id): id is string => Boolean(id));
       const allProjects = await client.getAllByIDs<ProjectDocument>(projectIds);
 
       // Find current project index
@@ -57,7 +66,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
     return (
       <div className="bg-white min-h-screen relative">
-        <SliceZone slices={project.data.slices} components={components} />
+        {/* All rows share one vertical gap (--project-row-gap) */}
+        <div className="project-rows">
+          <SliceZone slices={project.data.slices} components={components} />
+        </div>
 
         {/* Next Project Section */}
         {nextProjectData && (
@@ -88,7 +100,5 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
       </div>
     );
-  } catch (error) {
-    notFound();
   }
 }
