@@ -65,7 +65,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     }
 
     return (
-      <div className="bg-white min-h-screen relative">
+      <div className="bg-white min-h-screen relative pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-[calc(92px+env(safe-area-inset-bottom))]">
         {/* All rows share one vertical gap (--project-row-gap) */}
         <div className="project-rows">
           <SliceZone slices={project.data.slices} components={components} />
@@ -83,12 +83,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           />
         )}
 
-        {/* Bottom left navigation */}
-        <div className="fixed left-0 bottom-0 flex items-center justify-between gap-8 w-full p-12">
+        {/* Bottom title/close bar. Content above reserves its height via bottom padding. */}
+        <div className="fixed left-0 bottom-0 z-40 flex items-center justify-between gap-8 w-full bg-white p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] md:px-12 md:py-6 md:pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
           <Text variant="large-mobile" color="black">
             {project.data.title}
           </Text>
-          <Link href="/">
+          <Link
+            href="/"
+            aria-label="Close"
+            className="inline-flex min-w-11 min-h-11 items-center justify-center"
+          >
             <Text
               variant="large-mobile"
               color="black"

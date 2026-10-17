@@ -33,16 +33,19 @@ export default function About({ aboutText, contactBox }: AboutProps) {
           animate="center"
           exit="exit"
           transition={sectionTransition}
-          className="fixed inset-0 h-screen w-screen overflow-y-auto bg-white px-6 pt-24 pb-12 md:flex md:items-center md:px-16"
+          className="fixed inset-0 h-screen w-screen bg-white"
         >
-          <div className="flex w-full flex-col gap-10 md:flex-row md:gap-0">
+          {/* Scroll area starts below the fixed logo so text never slides under it */}
+          <div className="absolute inset-x-0 top-24 bottom-0 flex flex-col overflow-y-auto px-6 pt-2 pb-[calc(8rem+env(safe-area-inset-bottom))] md:px-16 lg:pb-12">
+          {/* my-auto centers short content without pushing overflow above the scroll origin */}
+          <div className="my-auto flex w-full flex-col gap-10 lg:flex-row lg:gap-0">
             {/* Left side - About text */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={contentFadeTransition}
-              className="flex-1 md:pr-8"
+              className="flex-1 lg:pr-8"
             >
               <PrismicRichText
                 field={aboutText}
@@ -66,7 +69,7 @@ export default function About({ aboutText, contactBox }: AboutProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={contentFadeTransition}
-              className="flex-1 border-t border-black/10 pt-6 md:border-t-0 md:pl-36 md:pt-0"
+              className="flex-1 border-t border-black/10 pt-6 lg:border-t-0 lg:pl-16 lg:pt-0"
             >
               <PrismicRichText
                 field={contactBox}
@@ -103,6 +106,7 @@ export default function About({ aboutText, contactBox }: AboutProps) {
                 }}
               />
             </motion.div>
+          </div>
           </div>
         </motion.div>
       )}

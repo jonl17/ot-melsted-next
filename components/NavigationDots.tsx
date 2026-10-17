@@ -28,19 +28,43 @@ export default function NavigationDots() {
   };
 
   return (
-    <div className="fixed bottom-12 left-0 right-0 flex justify-center gap-4 z-50">
+    <div className="fixed bottom-[34px] left-0 right-0 flex justify-center z-50">
       <button
+        type="button"
         onClick={() => setActiveSection(0)}
-        className={`w-4 h-4 ${transitionClasses} ${getButtonColor(0)}`}
-      />
+        aria-label="Go to slideshow"
+        aria-current={activeSection === 0 ? "true" : undefined}
+        className="inline-flex min-w-11 min-h-11 items-center justify-center"
+      >
+        <span
+          aria-hidden="true"
+          className={`block w-4 h-4 ${transitionClasses} ${getButtonColor(0)}`}
+        />
+      </button>
       <button
+        type="button"
         onClick={() => setActiveSection(1)}
-        className={`w-4 h-4 ${transitionClasses} ${getButtonColor(1)}`}
-      />
+        aria-label="Go to projects"
+        aria-current={activeSection === 1 ? "true" : undefined}
+        className="inline-flex min-w-11 min-h-11 items-center justify-center"
+      >
+        <span
+          aria-hidden="true"
+          className={`block w-4 h-4 ${transitionClasses} ${getButtonColor(1)}`}
+        />
+      </button>
       <button
+        type="button"
         onClick={() => setActiveSection(2)}
-        className={`w-4 h-4 ${transitionClasses} ${getButtonColor(2)}`}
-      />
+        aria-label="Go to about"
+        aria-current={activeSection === 2 ? "true" : undefined}
+        className="inline-flex min-w-11 min-h-11 items-center justify-center"
+      >
+        <span
+          aria-hidden="true"
+          className={`block w-4 h-4 ${transitionClasses} ${getButtonColor(2)}`}
+        />
+      </button>
     </div>
   );
 }
