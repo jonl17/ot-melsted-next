@@ -28,7 +28,7 @@ export default function LoadingScreen() {
           }}
           className="fixed inset-0 z-[100] bg-lightgray flex flex-col items-center justify-center"
         >
-          <h1 className="text-huge font-family-untitled-medium text-black">
+          <h1 className="px-4 text-center text-huge font-family-untitled-medium text-black">
             OT.Melsted
           </h1>
         </motion.div>
