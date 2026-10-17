@@ -119,3 +119,12 @@
 .project-media--cover {
   object-fit: cover;
 }
+
+/* Project intro size tiers (see utils/introTextSize.ts). Mobile only. These rules are
+   unlayered, so they override the text-30 utility; md+ keeps the original 30px/38px. */
+@media (max-width: 767px) {
+  .intro-text--t1 { font-size: 24px; line-height: 30px; }
+  .intro-text--t2 { font-size: 21px; line-height: 27px; }
+  .intro-text--t3 { font-size: 18px; line-height: 24px; }
+  .intro-text--t4 { font-size: 15px; line-height: 20px; }
+}
