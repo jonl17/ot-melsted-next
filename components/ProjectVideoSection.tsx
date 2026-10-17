@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 interface ProjectVideoSectionProps {
   videoUrl: string;
   container: boolean;
-  /** Optional poster image. The Prismic slice has no poster field yet. */
+  /** Optional poster image (Prismic `poster` field on the video slice). */
   posterUrl?: string;
 }
 
@@ -53,6 +53,7 @@ export default function ProjectVideoSection({
         src={videoUrl}
         poster={posterUrl || undefined}
         preload="metadata"
+        autoPlay
         loop
         muted
         playsInline

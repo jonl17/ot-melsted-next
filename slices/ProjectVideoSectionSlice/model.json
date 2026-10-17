@@ -28,6 +28,14 @@
             "placeholder_true": "true",
             "placeholder_false": "false"
           }
+        },
+        "poster": {
+          "type": "Image",
+          "config": {
+            "label": "poster",
+            "constraint": {},
+            "thumbnails": []
+          }
         }
       },
       "items": {}

@@ -570,6 +570,16 @@ export interface ProjectImageSectionSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/fields/boolean
    */
   remove_container: prismic.BooleanField;
+
+  /**
+   * poster field in *ProjectVideoSectionSlice → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: project_video_section_slice.default.primary.poster
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  poster: prismic.ImageField<never>;
 }
 
 /**
@@ -671,6 +681,16 @@ export interface ProjectVideoSectionSliceSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/fields/boolean
    */
   remove_container: prismic.BooleanField;
+
+  /**
+   * poster field in *ProjectVideoSectionSlice → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: project_video_section_slice.default.primary.poster
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  poster: prismic.ImageField<never>;
 }
 
 /**

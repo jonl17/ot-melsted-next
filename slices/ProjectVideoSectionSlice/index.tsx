@@ -24,6 +24,7 @@ const ProjectVideoSectionSlice = ({
           "url" in slice.primary.video ? slice.primary.video.url ?? "" : ""
         }
         container={!slice.primary.remove_container}
+        posterUrl={slice.primary.poster?.url ?? undefined}
       />
     </section>
   )
