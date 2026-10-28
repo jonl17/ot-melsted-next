@@ -46,6 +46,59 @@
         }
       },
       "items": {}
+    },
+    {
+      "id": "videoAndImage",
+      "name": "Video and image",
+      "docURL": "...",
+      "version": "initial",
+      "description": "A video and a photo side by side (equal width, stacked on mobile)",
+      "imageUrl": "",
+      "primary": {
+        "video": {
+          "type": "Link",
+          "config": {
+            "label": "video",
+            "placeholder": "Upload an mp4 to the Media Library",
+            "select": "media"
+          }
+        },
+        "poster": {
+          "type": "Image",
+          "config": {
+            "label": "video poster (optional)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "video_on_right": {
+          "type": "Boolean",
+          "config": {
+            "label": "video on right",
+            "default_value": false,
+            "placeholder_true": "video right, image left",
+            "placeholder_false": "video left, image right"
+          }
+        },
+        "remove_container": {
+          "type": "Boolean",
+          "config": {
+            "label": "remove container",
+            "default_value": false,
+            "placeholder_true": "true",
+            "placeholder_false": "false"
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }

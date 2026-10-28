@@ -300,6 +300,17 @@ interface ProjectDocumentData {
   featured_image: prismic.ImageField<never>;
 
   /**
+   * featured video (optional, list hover) field in *project*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: Looping mp4 shown on hover instead of the featured image
+   * - **API ID Path**: project.featured_video
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+   */
+  featured_video: prismic.LinkToMediaField<prismic.FieldState, never>;
+
+  /**
    * Slice Zone field in *project*
    *
    * - **Field Type**: Slice Zone
@@ -598,7 +609,79 @@ export type ProjectImageSectionSliceDefault = prismic.SharedSliceVariation<
 /**
  * Slice variation for *ProjectImageSectionSlice*
  */
-type ProjectImageSectionSliceVariation = ProjectImageSectionSliceDefault;
+/**
+ * Primary content in *ProjectImageSectionSlice → Video and image → Primary*
+ */
+export interface ProjectImageSectionSliceVideoAndImagePrimary {
+  /**
+   * video field in *ProjectImageSectionSlice → Video and image → Primary*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: Upload an mp4 to the Media Library
+   * - **API ID Path**: project_image_section.videoAndImage.primary.video
+   * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+   */
+  video: prismic.LinkToMediaField<prismic.FieldState, never>;
+
+  /**
+   * video poster (optional) field in *ProjectImageSectionSlice → Video and image → Primary*
+   *
+   * - **Field Type**: Image
+   * - **API ID Path**: project_image_section.videoAndImage.primary.poster
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  poster: prismic.ImageField<never>;
+
+  /**
+   * image field in *ProjectImageSectionSlice → Video and image → Primary*
+   *
+   * - **Field Type**: Image
+   * - **API ID Path**: project_image_section.videoAndImage.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * video on right field in *ProjectImageSectionSlice → Video and image → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Default Value**: false
+   * - **API ID Path**: project_image_section.videoAndImage.primary.video_on_right
+   * - **Documentation**: https://prismic.io/docs/fields/boolean
+   */
+  video_on_right: prismic.BooleanField;
+
+  /**
+   * remove container field in *ProjectImageSectionSlice → Video and image → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Default Value**: false
+   * - **API ID Path**: project_image_section.videoAndImage.primary.remove_container
+   * - **Documentation**: https://prismic.io/docs/fields/boolean
+   */
+  remove_container: prismic.BooleanField;
+}
+
+/**
+ * Video and image variation for ProjectImageSectionSlice Slice
+ *
+ * - **API ID**: `videoAndImage`
+ * - **Description**: A video and a photo side by side (equal width, stacked on mobile)
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ProjectImageSectionSliceVideoAndImage =
+  prismic.SharedSliceVariation<
+    "videoAndImage",
+    Simplify<ProjectImageSectionSliceVideoAndImagePrimary>,
+    never
+  >;
+
+/**
+ * Slice variation for *ProjectImageSectionSlice*
+ */
+type ProjectImageSectionSliceVariation =
+  | ProjectImageSectionSliceDefault
+  | ProjectImageSectionSliceVideoAndImage;
 
 /**
  * ProjectImageSectionSlice Shared Slice
@@ -773,6 +856,8 @@ declare module "@prismicio/client" {
       ProjectImageSectionSliceDefaultPrimary,
       ProjectImageSectionSliceVariation,
       ProjectImageSectionSliceDefault,
+      ProjectImageSectionSliceVideoAndImagePrimary,
+      ProjectImageSectionSliceVideoAndImage,
       ProjectShowcaseSliceSlice,
       ProjectShowcaseSliceSliceDefaultItem,
       ProjectShowcaseSliceSliceVariation,

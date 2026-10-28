@@ -27,6 +27,14 @@
           "thumbnails": []
         }
       },
+      "featured_video": {
+        "type": "Link",
+        "config": {
+          "label": "featured video (optional, list hover)",
+          "placeholder": "Looping mp4 shown on hover instead of the featured image",
+          "select": "media"
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
