@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ProjectDocument } from "~prismicio-types-d";
 import { PrismicNextImage } from "@prismicio/next";
+import HoverPreviewVideo from "./HoverPreviewVideo";
 import { useTheme } from "@/contexts/ThemeContext";
 import Text from "./elements/Text";
 import Link from "next/link";
@@ -19,10 +20,17 @@ interface ProjectShowcaseProps {
 }
 const sectionVariants = getSectionVariants();
 
+/** Optional `featured_video` (T-120); missing until the field exists in Prismic. */
+function getFeaturedVideoUrl(project: ProjectDocument): string {
+  const field = project.data.featured_video;
+  return field && "url" in field && field.url ? field.url : "";
+}
+
 export default function ProjectShowcase({
   projectDocuments,
 }: ProjectShowcaseProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [playingVideos, setPlayingVideos] = useState<Set<string>>(new Set());
   const { activeSection, previousSection } = useTheme();
   const direction = getSectionDirection(activeSection, previousSection);
 
@@ -83,7 +91,7 @@ export default function ProjectShowcase({
             </div>
           </motion.div>
 
-          {/* Right side - Featured image */}
+          {/* Right side - Featured image or looping video (T-120) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -94,7 +102,10 @@ export default function ProjectShowcase({
             <div className="relative w-full h-full max-w-2xl max-h-[80vh]">
               {projectDocuments.map((project) => {
                 const isHovered = project.id === hoveredProject;
-                if (!project.data.featured_image?.url) return null;
+                const videoUrl = getFeaturedVideoUrl(project);
+                const hasImage = Boolean(project.data.featured_image?.url);
+                if (!hasImage && !videoUrl) return null;
+                const videoReady = playingVideos.has(project.id);
 
                 return (
                   <div
@@ -103,11 +114,29 @@ export default function ProjectShowcase({
                       isHovered ? "opacity-100" : "opacity-0"
                     }`}
                   >
-                    <PrismicNextImage
-                      field={project.data.featured_image}
-                      className="w-full h-full object-contain"
-                      fallbackAlt=""
-                    />
+                    {hasImage && (
+                      <PrismicNextImage
+                        field={project.data.featured_image}
+                        className={`w-full h-full object-contain ${
+                          videoUrl && videoReady ? "invisible" : ""
+                        }`}
+                        fallbackAlt=""
+                      />
+                    )}
+                    {videoUrl && (
+                      <HoverPreviewVideo
+                        src={videoUrl}
+                        active={isHovered}
+                        className="absolute inset-0 w-full h-full object-contain"
+                        onPlaying={() =>
+                          setPlayingVideos((prev) =>
+                            prev.has(project.id)
+                              ? prev
+                              : new Set(prev).add(project.id)
+                          )
+                        }
+                      />
+                    )}
                   </div>
                 );
               })}
