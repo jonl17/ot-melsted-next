@@ -48,6 +48,7 @@ export default function ProjectVideoImageSection({
       key="image"
       field={image}
       fallbackAlt=""
+      imgixParams={{ q: 85 }}
       className={mediaClass}
       sizes={
         isPair
