@@ -38,6 +38,7 @@ export default function ProjectImageSection({
             key={i}
             field={img}
             fallbackAlt=""
+            imgixParams={{ q: 85 }}
             className={`project-media${isPair ? " project-media--cover" : ""}`}
             sizes={
               isPair
