@@ -925,6 +925,8 @@ declare module "@prismicio/client" {
       ProjectImageSectionSliceDefault,
       ProjectImageSectionSliceVideoAndImagePrimary,
       ProjectImageSectionSliceVideoAndImage,
+      ProjectImageSectionSliceTwoVideosPrimary,
+      ProjectImageSectionSliceTwoVideos,
       ProjectShowcaseSliceSlice,
       ProjectShowcaseSliceSliceDefaultItem,
       ProjectShowcaseSliceSliceVariation,
