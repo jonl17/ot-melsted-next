@@ -677,11 +677,78 @@ export type ProjectImageSectionSliceVideoAndImage =
   >;
 
 /**
+ * Primary content in *ProjectImageSectionSlice → Two videos → Primary*
+ */
+export interface ProjectImageSectionSliceTwoVideosPrimary {
+  /**
+   * first video field in *ProjectImageSectionSlice → Two videos → Primary*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: Upload an mp4 to the Media Library
+   * - **API ID Path**: project_image_section.twoVideos.primary.first_video
+   * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+   */
+  first_video: prismic.LinkToMediaField<prismic.FieldState, never>;
+
+  /**
+   * first video poster (optional) field in *ProjectImageSectionSlice → Two videos → Primary*
+   *
+   * - **Field Type**: Image
+   * - **API ID Path**: project_image_section.twoVideos.primary.first_poster
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  first_poster: prismic.ImageField<never>;
+
+  /**
+   * second video field in *ProjectImageSectionSlice → Two videos → Primary*
+   *
+   * - **Field Type**: Link to Media
+   * - **Placeholder**: Upload an mp4 to the Media Library
+   * - **API ID Path**: project_image_section.twoVideos.primary.second_video
+   * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+   */
+  second_video: prismic.LinkToMediaField<prismic.FieldState, never>;
+
+  /**
+   * second video poster (optional) field in *ProjectImageSectionSlice → Two videos → Primary*
+   *
+   * - **Field Type**: Image
+   * - **API ID Path**: project_image_section.twoVideos.primary.second_poster
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  second_poster: prismic.ImageField<never>;
+
+  /**
+   * remove container field in *ProjectImageSectionSlice → Two videos → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Default Value**: false
+   * - **API ID Path**: project_image_section.twoVideos.primary.remove_container
+   * - **Documentation**: https://prismic.io/docs/fields/boolean
+   */
+  remove_container: prismic.BooleanField;
+}
+
+/**
+ * Two videos variation for ProjectImageSectionSlice Slice
+ *
+ * - **API ID**: `twoVideos`
+ * - **Description**: Two videos side by side (equal width, stacked on mobile)
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ProjectImageSectionSliceTwoVideos = prismic.SharedSliceVariation<
+  "twoVideos",
+  Simplify<ProjectImageSectionSliceTwoVideosPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *ProjectImageSectionSlice*
  */
 type ProjectImageSectionSliceVariation =
   | ProjectImageSectionSliceDefault
-  | ProjectImageSectionSliceVideoAndImage;
+  | ProjectImageSectionSliceVideoAndImage
+  | ProjectImageSectionSliceTwoVideos;
 
 /**
  * ProjectImageSectionSlice Shared Slice

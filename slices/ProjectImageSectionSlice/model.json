@@ -99,6 +99,58 @@
         }
       },
       "items": {}
+    },
+    {
+      "id": "twoVideos",
+      "name": "Two videos",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Two videos side by side (equal width, stacked on mobile)",
+      "imageUrl": "",
+      "primary": {
+        "first_video": {
+          "type": "Link",
+          "config": {
+            "label": "first video",
+            "placeholder": "Upload an mp4 to the Media Library",
+            "select": "media"
+          }
+        },
+        "first_poster": {
+          "type": "Image",
+          "config": {
+            "label": "first video poster (optional)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "second_video": {
+          "type": "Link",
+          "config": {
+            "label": "second video",
+            "placeholder": "Upload an mp4 to the Media Library",
+            "select": "media"
+          }
+        },
+        "second_poster": {
+          "type": "Image",
+          "config": {
+            "label": "second video poster (optional)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "remove_container": {
+          "type": "Boolean",
+          "config": {
+            "label": "remove container",
+            "default_value": false,
+            "placeholder_true": "true",
+            "placeholder_false": "false"
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }
