@@ -8,22 +8,41 @@ import NextProject from "@/components/NextProject/NextProject";
 import { ProjectDocument } from "~prismicio-types-d";
 import { Content } from "@prismicio/client";
 import { getOrderedShowcaseProjects } from "@/utils/orderedProjects";
+import {
+  injectT151TwoVideosFixture,
+  isT151FixtureEnvAllowed,
+  parseT151FixtureParam,
+} from "@/lib/t151TwoVideosFixture";
 
 // Render unknown uids on demand (new projects published after the last build)
 export const dynamicParams = true;
 
 interface ProjectPageProps {
   params: Promise<{ uid: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function ProjectPage({ params }: ProjectPageProps) {
+export default async function ProjectPage({
+  params,
+  searchParams,
+}: ProjectPageProps) {
   const { uid } = await params;
+  const sp = await searchParams;
   const client = createClient();
 
   const project = await client
     .getByUID<ProjectDocument>("project", uid)
     .catch(() => null);
   if (!project) notFound();
+
+  // T-151 FIXTURE ONLY (branch t-151-fixture): preview + query gate; never prod.
+  const fixtureMode =
+    uid === "salurinn" && isT151FixtureEnvAllowed()
+      ? parseT151FixtureParam(sp.fixture)
+      : null;
+  const slices = fixtureMode
+    ? injectT151TwoVideosFixture(project.data.slices, fixtureMode)
+    : project.data.slices;
 
   {
 
@@ -77,7 +96,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       >
         {/* All rows share one vertical gap (--project-row-gap) */}
         <div className="project-rows">
-          <SliceZone slices={project.data.slices} components={components} />
+          <SliceZone slices={slices} components={components} />
         </div>
 
         {/* Next Project Section */}
