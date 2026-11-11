@@ -129,12 +129,13 @@ function canUseScatterHover(): boolean {
 interface ScatterPreviewProps {
   project: ProjectDocument;
   placement: ScatterPlacement;
+  /** The project's video is already showing a frame, so the image can hide. */
+  videoReady: boolean;
 }
 
-function ScatterPreview({ project, placement }: ScatterPreviewProps) {
-  const [videoReady, setVideoReady] = useState(false);
-  const videoUrl = getFeaturedVideoUrl(project);
-  const hasImage = Boolean(project.data.featured_image?.url);
+/** The featured image, remounted at a new spot on every hover. */
+function ScatterPreview({ project, placement, videoReady }: ScatterPreviewProps) {
+  if (!project.data.featured_image?.url) return null;
 
   return (
     <div
@@ -147,24 +148,52 @@ function ScatterPreview({ project, placement }: ScatterPreviewProps) {
         height: placement.height,
       }}
     >
-      {hasImage && (
-        <PrismicNextImage
-          field={project.data.featured_image}
-          sizes={`${HOVER_IMAGE_WIDTH_VW}vw`}
-          className={`h-full w-full object-contain ${
-            videoUrl && videoReady ? "invisible" : ""
-          }`}
-          fallbackAlt=""
-        />
-      )}
-      {videoUrl && (
-        <HoverPreviewVideo
-          src={videoUrl}
-          active
-          className="absolute inset-0 h-full w-full object-contain"
-          onPlaying={() => setVideoReady(true)}
-        />
-      )}
+      <PrismicNextImage
+        field={project.data.featured_image}
+        sizes={`${HOVER_IMAGE_WIDTH_VW}vw`}
+        className={`h-full w-full object-contain ${
+          videoReady ? "invisible" : ""
+        }`}
+        fallbackAlt=""
+      />
+    </div>
+  );
+}
+
+interface ScatterVideoProps {
+  src: string;
+  /** Where to show it, or null to hide and pause it. */
+  placement: ScatterPlacement | null;
+  onPlaying: () => void;
+}
+
+/**
+ * One video element per project, mounted on its first hover and kept after
+ * that (T-189). Hiding and moving it instead of remounting means the file is
+ * fetched once, not again on every hover.
+ */
+function ScatterVideo({ src, placement, onPlaying }: ScatterVideoProps) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none absolute z-0 ${placement ? "" : "hidden"}`}
+      style={
+        placement
+          ? {
+              left: placement.x,
+              top: placement.y,
+              width: placement.width,
+              height: placement.height,
+            }
+          : undefined
+      }
+    >
+      <HoverPreviewVideo
+        src={src}
+        active={placement !== null}
+        className="h-full w-full object-contain"
+        onPlaying={onPlaying}
+      />
     </div>
   );
 }
@@ -174,6 +203,12 @@ export default function ProjectShowcase({
 }: ProjectShowcaseProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   const [placement, setPlacement] = useState<ScatterPlacement | null>(null);
+  /** Projects whose video element is mounted, in first-hover order (T-189). */
+  const [videoProjectIds, setVideoProjectIds] = useState<string[]>([]);
+  /** Projects whose video has played at least one frame. */
+  const [readyVideoIds, setReadyVideoIds] = useState<ReadonlySet<string>>(
+    () => new Set(),
+  );
   const hoverIdRef = useRef(0);
   const { activeSection, previousSection } = useTheme();
   const direction = getSectionDirection(activeSection, previousSection);
@@ -190,6 +225,22 @@ export default function ProjectShowcase({
     return () => media.removeEventListener("change", clearWhenHoverEnds);
   }, []);
 
+  // The box was sized and placed for the old viewport; hide it until the
+  // next hover picks a new spot (T-188).
+  useEffect(() => {
+    function clearOnResize() {
+      setPlacement(null);
+    }
+    window.addEventListener("resize", clearOnResize);
+    return () => window.removeEventListener("resize", clearOnResize);
+  }, []);
+
+  function markVideoReady(projectId: string) {
+    setReadyVideoIds((current) =>
+      current.has(projectId) ? current : new Set(current).add(projectId),
+    );
+  }
+
   function handleProjectEnter(project: ProjectDocument) {
     setHoveredProject(project.id);
     if (!canUseScatterHover() || !hasPreviewMedia(project)) {
@@ -203,6 +254,11 @@ export default function ProjectShowcase({
     };
     const box = previewBox(previewAspect(project), viewport);
     const position = pickPosition(box, viewport);
+    if (getFeaturedVideoUrl(project)) {
+      setVideoProjectIds((current) =>
+        current.includes(project.id) ? current : [...current, project.id],
+      );
+    }
     hoverIdRef.current += 1;
     setPlacement({
       hoverId: hoverIdRef.current,
@@ -237,8 +293,25 @@ export default function ProjectShowcase({
               key={placement.hoverId}
               project={scatteredProject}
               placement={placement}
+              videoReady={readyVideoIds.has(scatteredProject.id)}
             />
           ) : null}
+
+          {videoProjectIds.map((projectId) => {
+            const project = projectDocuments.find((p) => p.id === projectId);
+            const src = project ? getFeaturedVideoUrl(project) : "";
+            if (!src) return null;
+            return (
+              <ScatterVideo
+                key={projectId}
+                src={src}
+                placement={
+                  placement?.projectId === projectId ? placement : null
+                }
+                onPlaying={() => markVideoReady(projectId)}
+              />
+            );
+          })}
 
           <motion.div
             initial={{ opacity: 0 }}
