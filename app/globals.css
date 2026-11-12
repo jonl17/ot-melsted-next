@@ -120,6 +120,23 @@
   object-fit: cover;
 }
 
+/* Short fade-in instead of a hard pop when a video frame or hover image is ready
+   (T-193). Add .is-ready once something can paint. */
+.media-fade {
+  opacity: 0;
+  transition: opacity 250ms ease-out;
+}
+
+.media-fade.is-ready {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-fade {
+    transition: none;
+  }
+}
+
 /* Project intro size tiers (see utils/introTextSize.ts). Mobile only. These rules are
    unlayered, so they override the text-30 utility; md+ keeps the original 30px/38px. */
 @media (max-width: 767px) {

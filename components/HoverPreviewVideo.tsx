@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+/** Matches the `.media-fade` transition in globals.css. */
+const FADE_MS = 250;
 
 interface HoverPreviewVideoProps {
   src: string;
   active: boolean;
   className?: string;
-  /** Called once the first frame is playing, so a fallback image can hide. */
+  /**
+   * Called once the first frame is playing and has faded in, so a fallback
+   * image underneath can hide.
+   */
   onPlaying?: () => void;
 }
 
@@ -14,6 +20,7 @@ interface HoverPreviewVideoProps {
  * Project-list hover preview (T-120): muted, looping, inline video.
  * Nothing is downloaded until the project is first hovered (preload="none");
  * it plays while hovered and pauses when the pointer leaves.
+ * The first frame fades in (`.media-fade`, T-193) instead of popping in.
  */
 export default function HoverPreviewVideo({
   src,
@@ -22,6 +29,18 @@ export default function HoverPreviewVideo({
   onPlaying,
 }: HoverPreviewVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const onPlayingRef = useRef(onPlaying);
+
+  useEffect(() => {
+    onPlayingRef.current = onPlaying;
+  }, [onPlaying]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const timer = window.setTimeout(() => onPlayingRef.current?.(), FADE_MS);
+    return () => window.clearTimeout(timer);
+  }, [playing]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -43,8 +62,8 @@ export default function HoverPreviewVideo({
       muted
       playsInline
       aria-hidden="true"
-      className={className}
-      onPlaying={onPlaying}
+      className={`media-fade${playing ? " is-ready" : ""}${className ? ` ${className}` : ""}`}
+      onPlaying={() => setPlaying(true)}
     />
   );
 }

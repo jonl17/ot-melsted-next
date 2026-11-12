@@ -135,6 +135,8 @@ interface ScatterPreviewProps {
 
 /** The featured image, remounted at a new spot on every hover. */
 function ScatterPreview({ project, placement, videoReady }: ScatterPreviewProps) {
+  // Remounted per hover (keyed), so each hover fades the image in (T-193).
+  const [loaded, setLoaded] = useState(false);
   if (!project.data.featured_image?.url) return null;
 
   return (
@@ -151,9 +153,10 @@ function ScatterPreview({ project, placement, videoReady }: ScatterPreviewProps)
       <PrismicNextImage
         field={project.data.featured_image}
         sizes={`${HOVER_IMAGE_WIDTH_VW}vw`}
-        className={`h-full w-full object-contain ${
-          videoReady ? "invisible" : ""
-        }`}
+        className={`media-fade h-full w-full object-contain ${
+          loaded ? "is-ready" : ""
+        } ${videoReady ? "invisible" : ""}`}
+        onLoad={() => setLoaded(true)}
         fallbackAlt=""
       />
     </div>

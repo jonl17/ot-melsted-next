@@ -96,6 +96,7 @@ export default function FrontpageHeroSlideshow({
                 field={slide.image}
                 fill
                 className="object-cover"
+                loading={index === 0 ? "eager" : "lazy"}
                 fetchPriority={index === 0 ? "high" : "auto"}
                 alt=""
               />
