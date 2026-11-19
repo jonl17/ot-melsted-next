@@ -289,7 +289,9 @@ export default function ProjectShowcase({
           animate="center"
           exit="exit"
           transition={sectionTransition}
-          className="fixed inset-0 h-screen w-screen bg-white"
+          // h-dvh, not h-screen: on phones 100vh is taller than the visible area, so the
+          // end of the list sat behind the browser bar and under the nav dots (T-201 #5).
+          className="fixed inset-0 h-dvh w-screen bg-white"
         >
           {placement && scatteredProject ? (
             <ScatterPreview
@@ -323,7 +325,7 @@ export default function ProjectShowcase({
             transition={contentFadeTransition}
             className="project-list-scroll relative z-10 h-full w-full overflow-y-auto"
           >
-            <div className="flex min-h-full flex-col px-6 pt-24 pb-[calc(6rem+env(safe-area-inset-bottom))] md:px-16">
+            <div className="flex min-h-full flex-col px-6 pt-24 pb-[calc(7.5rem+env(safe-area-inset-bottom))] md:px-16">
               <div className="m-auto flex w-full flex-col items-center gap-0.5 text-center">
                 {projectDocuments.map((project) => (
                   <Link

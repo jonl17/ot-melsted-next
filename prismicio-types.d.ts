@@ -443,6 +443,16 @@ export interface FrontpageHeroSliceSliceDefaultPrimarySlidesItem {
    * - **Documentation**: https://prismic.io/docs/fields/image
    */
   image: prismic.ImageField<never>;
+
+  /**
+   * mobile image (optional, portrait phones; e.g. 1170 x 2532) field in *FrontpageHeroSlice → Default → Primary → slides*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: frontpage_hero_slice.default.primary.slides[].mobile_image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  mobile_image: prismic.ImageField<never>;
 }
 
 /**

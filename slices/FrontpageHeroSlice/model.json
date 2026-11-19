@@ -25,6 +25,14 @@
                   "constraint": {},
                   "thumbnails": []
                 }
+              },
+              "mobile_image": {
+                "type": "Image",
+                "config": {
+                  "label": "mobile image (optional, portrait phones; e.g. 1170 x 2532)",
+                  "constraint": {},
+                  "thumbnails": []
+                }
               }
             }
           }

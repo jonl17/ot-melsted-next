@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "@/contexts/ThemeContext";
-import Text from "./elements/Text";
+import BrandWordmark from "./BrandWordmark";
 import { getTailwindTransitionClasses } from "@/utils/slideshowConfig";
 
 export default function Logo() {
@@ -24,14 +24,11 @@ export default function Logo() {
         onClick={() => setActiveSection(0)}
         className="cursor-pointer hover:opacity-70 transition-opacity"
       >
-        <Text
-          className={getTailwindTransitionClasses()}
-          variant="large-mobile"
-          font="untitled-medium"
-          color={textColor}
-        >
-          OT.Melsted
-        </Text>
+        <BrandWordmark
+          className={`text-large-mobile font-family-untitled-medium ${
+            textColor === "white" ? "text-white" : "text-black"
+          } ${getTailwindTransitionClasses()}`}
+        />
       </div>
     </div>
   );

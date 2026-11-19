@@ -33,10 +33,11 @@ export default function About({ aboutText, contactBox }: AboutProps) {
           animate="center"
           exit="exit"
           transition={sectionTransition}
-          className="fixed inset-0 h-screen w-screen bg-white"
+          // h-dvh, not h-screen: on phones 100vh runs behind the browser bar (T-201 #6)
+          className="fixed inset-0 h-dvh w-screen bg-white"
         >
           {/* Scroll area starts below the fixed logo so text never slides under it */}
-          <div className="absolute inset-x-0 top-24 bottom-0 flex flex-col overflow-y-auto px-6 pt-2 pb-[calc(8rem+env(safe-area-inset-bottom))] md:px-16 lg:pb-12">
+          <div className="absolute inset-x-0 top-24 bottom-0 flex flex-col overflow-y-auto px-6 pt-2 pb-[calc(10rem+env(safe-area-inset-bottom))] md:px-16 lg:pb-12">
           {/* my-auto centers short content without pushing overflow above the scroll origin */}
           <div className="my-auto flex w-full flex-col gap-10 lg:flex-row lg:gap-0">
             {/* Left side - About text */}
