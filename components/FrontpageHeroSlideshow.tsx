@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ImageField } from "@prismicio/client";
-import { PrismicNextImage } from "@prismicio/next";
+import {
+  ImageField,
+  asImageSrc,
+  asImageWidthSrcSet,
+  isFilled,
+} from "@prismicio/client";
 import { useTheme } from "@/contexts/ThemeContext";
 import { analyzeImageBrightness } from "@/utils/imageAnalysis";
 import {
@@ -18,6 +22,77 @@ import {
 
 interface Slide {
   image: ImageField;
+  /** Optional portrait-phone version (T-201 #3); missing until the field exists in Prismic. */
+  mobile_image?: ImageField;
+}
+
+/** Portrait screens (phones held upright) get the mobile image or the uncropped layout. */
+const PORTRAIT_QUERY = "(orientation: portrait)";
+
+function hasMobileImage(slide: Slide): boolean {
+  return Boolean(slide.mobile_image && isFilled.image(slide.mobile_image));
+}
+
+/** The image actually on screen, for the brightness check behind the logo colour. */
+function shownImageUrl(slide: Slide): string | null | undefined {
+  if (hasMobileImage(slide) && window.matchMedia(PORTRAIT_QUERY).matches) {
+    return slide.mobile_image?.url;
+  }
+  return slide.image?.url;
+}
+
+interface SlideImageProps {
+  slide: Slide;
+  eager: boolean;
+}
+
+/**
+ * One slide (T-201 #3). Desktop and landscape: the image fills the screen as
+ * before. Portrait phones: the slide's mobile image fills the screen if the
+ * editor added one; otherwise the whole desktop image is shown, centred on a
+ * blurred copy of itself, instead of a centre crop that cut most of it off.
+ * A <picture> lets the browser download only the version it shows.
+ */
+function SlideImage({ slide, eager }: SlideImageProps) {
+  if (!isFilled.image(slide.image)) return null;
+  const desktop = asImageWidthSrcSet(slide.image);
+  const mobile =
+    slide.mobile_image && isFilled.image(slide.mobile_image)
+      ? asImageWidthSrcSet(slide.mobile_image)
+      : null;
+  const loading = eager ? "eager" : "lazy";
+
+  return (
+    <>
+      {!mobile ? (
+        // Tiny blurred fill behind the uncropped portrait layout; never shown in landscape.
+        // eslint-disable-next-line @next/next/no-img-element -- imgix URL, 64px decorative fill
+        <img
+          aria-hidden="true"
+          alt=""
+          src={asImageSrc(slide.image, { w: 64, blur: 40 }) ?? undefined}
+          loading="lazy"
+          className="absolute inset-0 hidden h-full w-full scale-150 object-cover blur-2xl portrait:block"
+        />
+      ) : null}
+      <picture>
+        {mobile ? (
+          <source media={PORTRAIT_QUERY} srcSet={mobile.srcset} sizes="100vw" />
+        ) : null}
+        <img
+          src={desktop.src}
+          srcSet={desktop.srcset}
+          sizes="100vw"
+          alt=""
+          loading={loading}
+          fetchPriority={eager ? "high" : "auto"}
+          className={`absolute inset-0 h-full w-full object-cover ${
+            mobile ? "" : "portrait:object-contain"
+          }`}
+        />
+      </picture>
+    </>
+  );
 }
 
 interface FrontpageHeroSlideshowProps {
@@ -61,8 +136,9 @@ export default function FrontpageHeroSlideshow({
     if (activeSection !== 0) return;
 
     const currentSlide = slides[currentIndex];
-    if (currentSlide?.image?.url) {
-      analyzeImageBrightness(currentSlide.image.url).then((isDark) => {
+    const url = currentSlide ? shownImageUrl(currentSlide) : null;
+    if (url) {
+      analyzeImageBrightness(url).then((isDark) => {
         setIsDark(isDark);
       });
     }
@@ -90,16 +166,9 @@ export default function FrontpageHeroSlideshow({
               initial={false}
               animate={{ opacity: index === currentIndex ? 1 : 0 }}
               transition={getFramerTransitionConfig()}
-              className="absolute inset-0 w-full h-full"
+              className="absolute inset-0 w-full h-full overflow-hidden"
             >
-              <PrismicNextImage
-                field={slide.image}
-                fill
-                className="object-cover"
-                loading={index === 0 ? "eager" : "lazy"}
-                fetchPriority={index === 0 ? "high" : "auto"}
-                alt=""
-              />
+              <SlideImage slide={slide} eager={index === 0} />
             </motion.div>
           ))}
 
