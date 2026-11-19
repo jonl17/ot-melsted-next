@@ -26,6 +26,9 @@ interface Slide {
   mobile_image?: ImageField;
 }
 
+/** Same widths as before plus 1920, which a 1440px desktop screen picks (as with next/image). */
+const SLIDE_WIDTHS = [640, 828, 1200, 1920, 2048, 3840];
+
 /** Portrait screens (phones held upright) get the mobile image or the uncropped layout. */
 const PORTRAIT_QUERY = "(orientation: portrait)";
 
@@ -55,10 +58,10 @@ interface SlideImageProps {
  */
 function SlideImage({ slide, eager }: SlideImageProps) {
   if (!isFilled.image(slide.image)) return null;
-  const desktop = asImageWidthSrcSet(slide.image);
+  const desktop = asImageWidthSrcSet(slide.image, { widths: SLIDE_WIDTHS });
   const mobile =
     slide.mobile_image && isFilled.image(slide.mobile_image)
-      ? asImageWidthSrcSet(slide.mobile_image)
+      ? asImageWidthSrcSet(slide.mobile_image, { widths: SLIDE_WIDTHS })
       : null;
   const loading = eager ? "eager" : "lazy";
 
