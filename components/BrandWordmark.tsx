@@ -1,10 +1,12 @@
+import { preload } from "react-dom";
+
 /**
  * The OT.Melsted wordmark (T-201 #1 and #4): the header refresh button and the
  * loading screen both render this.
  *
- * The real logo file has not arrived yet, so it renders live text for now.
- * To switch to the logo, put the file in `public/brand/` and set `LOGO` below.
- * That is the only code change needed.
+ * The logo is Ólafur's OT_Merki.svg (19 Nov 2026), saved as
+ * `public/brand/ot-melsted-logo.svg` (T-202). Set `LOGO` to null to go back
+ * to the live-text wordmark.
  *
  * The file is drawn as a CSS mask filled with the text colour, so one
  * single-colour SVG (or a PNG with transparency) turns black or white with the
@@ -20,7 +22,15 @@ const LOGO: {
   height: number;
   /** Logo height relative to the font size of the text it replaces. */
   heightEm: number;
-} | null = null;
+} | null = {
+  src: "/brand/ot-melsted-logo.svg",
+  // viewBox of the SVG
+  width: 1862.96,
+  height: 268.81,
+  // Same width as the text it replaces: the 18px header text was 100px wide,
+  // and 100 / (1862.96 / 268.81) / 18 = 0.8.
+  heightEm: 0.8,
+};
 
 interface BrandWordmarkProps {
   /** Classes for the text fallback (font, size, colour). */
@@ -37,12 +47,17 @@ export default function BrandWordmark({
     return <Tag className={className}>OT.Melsted</Tag>;
   }
 
+  // Fetch the mask file with the HTML, so the loading screen shows the logo on first paint.
+  preload(LOGO.src, { as: "image", type: "image/svg+xml" });
+
   return (
-    <Tag className={`${className} leading-none`}>
+    // Same element, classes and line height as the text, so nothing around it moves.
+    // The 0.08em lift puts the logo where the text glyphs sat (measured at 390px).
+    <Tag className={className}>
       <span
         role="img"
         aria-label="OT.Melsted"
-        className="mx-auto block max-w-full bg-current"
+        className="relative -top-[0.08em] inline-block max-w-full bg-current align-middle"
         style={{
           height: `${LOGO.heightEm}em`,
           aspectRatio: `${LOGO.width} / ${LOGO.height}`,
