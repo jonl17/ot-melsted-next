@@ -1,41 +1,40 @@
-import { preload } from "react-dom";
-
 /**
  * The OT.Melsted wordmark (T-201 #1 and #4): the header refresh button and the
  * loading screen both render this.
  *
- * The logo is Ólafur's OT_Merki.svg (19 Nov 2026), saved as
- * `public/brand/ot-melsted-logo.svg` (T-202). Set `LOGO` to null to go back
- * to the live-text wordmark.
+ * The logo is Ólafur's OT_Merki.svg (19 Nov 2026, T-202), drawn inline as
+ * SVG paths filled with `currentColor`, so it turns black or white with the
+ * page theme like the text it replaced. The paths are copied unchanged from
+ * `public/brand/ot-melsted-logo.svg`.
  *
- * The file is drawn as a CSS mask filled with the text colour, so one
- * single-colour SVG (or a PNG with transparency) turns black or white with the
- * page theme, exactly like the text does today. It is sized from the
- * surrounding font size, so it keeps the size of the text it replaces;
- * `heightEm` tunes that.
+ * T-207: it used to be a CSS mask over that file. Safari did not show it
+ * (Ólafur, 21 Nov 2026), so it is inline now: no mask, no extra request, no
+ * `aspect-ratio` needed (the width is set in em next to the height).
+ *
+ * It is sized from the surrounding font size, so it keeps the size of the
+ * text it replaced: the 18px header text was 100px wide, and
+ * 100 / (1862.96 / 268.81) / 18 = 0.8em high.
  */
-const LOGO: {
-  /** Path under `public/`, e.g. "/brand/ot-melsted-logo.svg". */
-  src: string;
-  /** Pixel width and height of the file (only the ratio matters). */
-  width: number;
-  height: number;
-  /** Logo height relative to the font size of the text it replaces. */
-  heightEm: number;
-} | null = {
-  src: "/brand/ot-melsted-logo.svg",
-  // viewBox of the SVG
-  width: 1862.96,
-  height: 268.81,
-  // Same width as the text it replaces: the 18px header text was 100px wide,
-  // and 100 / (1862.96 / 268.81) / 18 = 0.8.
-  heightEm: 0.8,
-};
+const VIEWBOX = "0 0 1862.96 268.81";
+const HEIGHT_EM = 0.8;
+const WIDTH_EM = +((HEIGHT_EM * 1862.96) / 268.81).toFixed(4);
+const PATHS = [
+  "M0,136.21C0,58.22,47.08,3.6,122.55,3.6c75.46,0,122.54,54.62,122.54,132.61,0,77.98-47.08,132.6-122.54,132.6C47.08,268.81,0,214.19,0,136.21ZM196.58,136.21c0-56.79-24.8-94.88-74.03-94.88-48.52,0-74.03,36.65-74.03,94.88,0,58.21,25.51,94.87,74.03,94.87C171.06,231.08,196.58,194.42,196.58,136.21Z",
+  "M343.92,264.5V45.64s-92,0-92,0V7.91s231.8,0,231.8,0v37.73s-92.36,0-92.36,0v218.86S343.92,264.5,343.92,264.5Z",
+  "M447.78,264.5v-53.55s53.54,0,53.54,0v53.55S447.78,264.5,447.78,264.5Z",
+  "M783.79,264.5V62.89s-.72,0-.72,0l-72.95,201.61h-34.5s-73.32-201.61-73.32-201.61h-.71s0,201.61,0,201.61h-43.85s0-256.59,0-256.59h67.56s69,192.98,69,192.98h.72S764.02,7.91,764.02,7.91h65.41s0,256.59,0,256.59h-45.64Z",
+  "M867.16,173.58c0-58.94,38.81-95.96,91.28-95.96,54.26,0,84.45,39.54,84.45,92v14.74s-131.17,0-131.17,0c2.87,31.26,18.33,50.67,47.8,50.67,20.12,0,33.78-8.98,39.89-27.31h42.4c-7.9,38.45-39.89,61.09-82.29,61.09C905.25,268.81,867.16,232.16,867.16,173.58ZM958.44,111.76c-25.16,0-40.61,15.82-45.28,42.77h85.89C999.05,130.09,984.31,111.76,958.44,111.76Z",
+  "M1079.18,264.5V0s46,0,46,0v264.5S1079.18,264.5,1079.18,264.5Z",
+  "M1159.32,209.16h43.85c2.15,17.96,19.4,27.67,40.97,27.67,19.76,0,34.49-8.27,34.49-22.64,0-11.5-7.54-16.53-28.03-20.49l-32.34-5.75c-35.58-6.11-52.47-23.36-52.47-52.11,0-34.5,31.27-58.22,74.03-58.22,46.72,0,74.39,20.13,78.35,56.07h-42.05c-1.8-14.38-15.45-23.72-35.94-23.72-18.33,0-31.98,7.55-31.98,21.2,0,11.86,7.9,16.89,28.03,20.49l35.58,6.1c33.06,5.76,49.95,24.08,49.95,53.19,0,35.22-33.42,57.86-76.91,57.86C1195.98,268.81,1163.28,248.33,1159.32,209.16Z",
+  "M1362.72,214.55v-99.55s-25.15,0-25.15,0v-33.06s25.15,0,25.15,0v-45.64s45.64,0,45.64,0v45.64s43.49,0,43.49,0v33.06s-43.85,0-43.85,0v92.36c0,16.17,7.55,23,23.72,23,8.27,0,15.81-1.44,24.08-3.6v35.22c-12.22,3.6-23,5.39-36.3,5.39C1381.05,267.37,1362.72,250.84,1362.72,214.55Z",
+  "M1479.16,173.58c0-58.94,38.81-95.96,91.28-95.96,54.26,0,84.45,39.54,84.45,92v14.74s-131.17,0-131.17,0c2.87,31.26,18.33,50.67,47.79,50.67,20.13,0,33.79-8.98,39.89-27.31h42.41c-7.91,38.45-39.89,61.09-82.3,61.09C1517.25,268.81,1479.16,232.16,1479.16,173.58ZM1570.44,111.76c-25.16,0-40.61,15.82-45.28,42.77h85.89C1611.05,130.09,1596.31,111.76,1570.44,111.76Z",
+  "M1678.61,173.22c0-55.7,31.62-95.6,80.5-95.6,26.59,0,48.51,14.02,57.85,34.14V0s46,0,46,0v264.5s-45.28,0-45.28,0v-29.11c-9.7,20.84-33.06,33.42-58.57,33.42C1710.23,268.81,1678.61,228.92,1678.61,173.22ZM1818.04,176.45c0-22.64-2.15-36.29-12.22-49.59-8.26-10.42-19.4-15.45-33.78-15.45-30.18,0-47.07,24.43-47.07,61.81,0,37.37,16.89,61.81,47.07,61.81C1801.87,235.03,1818.04,211.67,1818.04,176.45Z",
+];
 
 interface BrandWordmarkProps {
-  /** Classes for the text fallback (font, size, colour). */
+  /** Classes for the wrapper (font size and colour drive the logo). */
   className?: string;
-  /** Element for the text fallback. */
+  /** Element for the wrapper. */
   as?: "p" | "h1";
 }
 
@@ -43,34 +42,23 @@ export default function BrandWordmark({
   className = "",
   as: Tag = "p",
 }: BrandWordmarkProps) {
-  if (!LOGO) {
-    return <Tag className={className}>OT.Melsted</Tag>;
-  }
-
-  // Fetch the mask file with the HTML, so the loading screen shows the logo on first paint.
-  preload(LOGO.src, { as: "image", type: "image/svg+xml" });
-
   return (
     // Same element, classes and line height as the text, so nothing around it moves.
     // The 0.08em lift puts the logo where the text glyphs sat (measured at 390px).
     <Tag className={className}>
-      <span
+      <svg
         role="img"
         aria-label="OT.Melsted"
-        className="relative -top-[0.08em] inline-block max-w-full bg-current align-middle"
-        style={{
-          height: `${LOGO.heightEm}em`,
-          aspectRatio: `${LOGO.width} / ${LOGO.height}`,
-          maskImage: `url(${LOGO.src})`,
-          WebkitMaskImage: `url(${LOGO.src})`,
-          maskSize: "contain",
-          WebkitMaskSize: "contain",
-          maskRepeat: "no-repeat",
-          WebkitMaskRepeat: "no-repeat",
-          maskPosition: "center",
-          WebkitMaskPosition: "center",
-        }}
-      />
+        viewBox={VIEWBOX}
+        width={`${WIDTH_EM}em`}
+        height={`${HEIGHT_EM}em`}
+        fill="currentColor"
+        className="relative -top-[0.08em] inline-block max-w-full align-middle"
+      >
+        {PATHS.map((d, i) => (
+          <path key={i} d={d} />
+        ))}
+      </svg>
     </Tag>
   );
 }
